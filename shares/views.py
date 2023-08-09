@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 import json
+from .models import Stock
+from django.contrib import messages
+from .forms import StockForm
+from django.http import HttpResponseBadRequest
+
 
 def home(request):
     if request.method == 'POST':
-        ticker = request.POST['ticker']
+        ticker = request.POST['ticker_symbol']
         api_request = requests.get('https://api.iex.cloud/v1/data/core/quote/' + ticker + '?token=pk_e90a37e0edd44a68868fc884f83d1961')
 
         try:
@@ -22,3 +27,27 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html', {})
+
+
+def add_stock(request):
+    if request.method == 'POST':
+        form = StockForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Stock Has Been Added')
+        else:
+            messages.error(request, 'Invalid Ticker Symbol')
+    else:
+        form = StockForm()  # Sukurkite formą, jei užklausa nėra POST
+
+    ticker = Stock.objects.all()
+    context = {'ticker': ticker, 'form': form}  # Pridėkite 'form' į kontekstą
+    return render(request, 'add_stock.html', context)
+
+
+def delete(request, stock_id):
+    item = Stock.objects.get(pk=stock_id)
+    item.delete()
+    messages.success(request, ('Stock Has Been Deleted!'))
+    return redirect(add_stock)
+
