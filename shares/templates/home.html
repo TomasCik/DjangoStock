@@ -1,29 +1,53 @@
+
+
 {% extends "base.html" %}
 
 {% block content %}
 
-{% if ticker %}
-    {{ticker}}
-{% endif %}
+<h1>Stock Portfolio</h1>
+<br/>
 
-{% if api %}
-    {% if api == None %}
-            There was a problem, please, try again later...
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-hover table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Previuos Close</th>
+                    <th scope="col">Market Cap</th>
+                    <th scope="col">Year to date Change</th>
+                    <th scope="col">52 Weeks High</th>
+                    <th scope="col">52 Weeks Low</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        {% else %}
+                {% if ticker %}
+                    {% for list_item in output %}
+                        <tr>
+                            <td>${{ list_item.0.companyName }}</td>
+                            <td>${{ list_item.0.latestPrice }}</td>
+                            <td>${{ list_item.0.previousClose }}</td>
+                            <td>${{ list_item.0.marketCap }}</td>
+                            <td>{{ list_item.0.ytdChange }}</td>
+                            <td>${{ list_item.0.week52High }}</td>
+                            <td>${{ list_item.0.week52Low }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8">You don't have stocks...</td>
+                    </tr>
+                {% endif %}
 
-            <h1>{{api.0.companyName}}</h1><br/>
-            Price: {{api.0.latestPrice}} $<br/>
-            Previuos Close : {{api.0.previousClose}} $<br/>
-            Market Cap: {{api.0.marketCap}} $<br/>
-            Year to date Change: {{api.0.ytdChange}}<br/>
-            52 Weeks High: {{api.0.week52High}} $<br/>
-            52 Weeks Low: {{api.0.week52Low}} $<br/>
-
-
-    {% endif %}
-{% endif %}
-
-
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
+
+
+
+

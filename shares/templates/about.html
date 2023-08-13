@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="about-container">
+    <h1>Projektas - DjangoStock</h1><br/>
 
+    <section class="description">
+        <h2>Projekto aprašymas:</h2> <br/><br/>
 
+        <p>
+            DjangoStock yra mokomasis projektas, sukurtas naudojant Python Django karkasą.
+            Jis leidžia vartotojams stebėti akcijų kainas, pridėti jas į portfolio ir gauti detalią peržiūrą apie įvairias akcijas.
+        </p>
+    </section>
 
+    <section class="technologies">
+        <h2>Naudojamos Technologijos:</h2>
+        <ul>
+            <li>Django: Pagrindinis svetainės karkasas.</li>
+            <li>yfinance: Biblioteka, skirta gauti akcijų duomenis.</li>
+            <li>Seaborn ir Matplotlib: Grafikų generavimui.</li>
+            <li>requests: API užklausoms.</li>
+            <li>IEX Cloud: Akcijų informacijos API.</li>
+            <li>Bootstrap: Tinklapio dizaino elementai.</li>
 
+        </ul>
+    </section>
+</div>
 
 {% endblock %}

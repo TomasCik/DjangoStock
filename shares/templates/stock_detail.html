@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if detailed_stock %}
+    <h2>{{ stock_info.longName }} {{ detailed_stock.ticker }}</h2>
+
+
+    <h3>Last Close Price: {{ latest_close_price }}</h3>
+
+    <!-- Display additional stock information -->
+    <h3>Stock Information:</h3>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Address</td><td>{{ stock_info.address1 }}, {{ stock_info.city }}, {{ stock_info.state }} {{ stock_info.zip }}, {{ stock_info.country }}</td></tr>
+                    <tr><td>Phone</td><td>{{ stock_info.phone }}</td></tr>
+                    <tr><td>Website</td><td><a href="{{ stock_info.website }}" target="_blank">{{ stock_info.website }}</a></td></tr>
+                    <tr><td>Industry</td><td>{{ stock_info.industry }}</td></tr>
+                    <tr><td>Previous Close Price</td><td>${{ stock_info.previousClose }}</td></tr>
+                    <tr><td>Open Price</td><td>${{ stock_info.open }}</td></tr>
+                    <tr><td>Dividend Rate</td><td>{{ stock_info.dividendRate }}</td></tr>
+                    <tr><td>Dividend Yield</td><td>{{ stock_info.dividendYield }}%</td></tr>
+                    <tr><td>Ex-Dividend Date</td><td>{{ stock_info.exDividendDate }}</td></tr>
+                    <tr><td>Payout Ratio</td><td>{{ stock_info.payoutRatio }}%</td></tr>
+                    <tr><td>Gross Margins</td><td>{{ stock_info.grossMargins }}%</td></tr>
+                    <tr><td>52-Week Change</td><td>{{ stock_info.52WeekChange }}%</td></tr>
+                    <!-- Add other fields as rows here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+        <div class="col-md-8">
+                    <h3>Stock Price Over Time:</h3>
+                    <img src="data:image/png;base64,{{ plot_url }}" alt="Stock Price Over Time">
+                </div>
+    </div>
+
+    </div>
+
+    <h3>History Finance Data:</h3>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Close Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in yahoo_data %}
+                        <tr>
+                            <td>{{ record.Date }}</td>
+                            <td>${{ record.Close }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% else %}
+    <h2>All Stocks:</h2>
+    <ul>
+        {% for stock in all_stocks %}
+            <li><a href="{% url 'stock_detail_with_id' stock.id %}">{{ stock.ticker }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}
